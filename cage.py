@@ -5,7 +5,7 @@ cage_length = 846
 cage_volume = cage_heigth * cage_width * cage_length
     
 class Cage(object):
-    """ Cage object with height, width, length and volume attribute """
+    """ Cage object with height, width, length, volume attribute and packages inside the cage"""
     def __init__(self):
         self.packages = []
         self.height = 0
@@ -16,12 +16,14 @@ class Cage(object):
     def append(self, packageForCage):
         self.packages.append(packageForCage)
         
-        if (self.length + packageForCage[2]) <= cage_length and (packageForCage[0] < self.height) and (packageForCage[1] < self.width):
+        if (self.length + packageForCage[2]) <= cage_length and (packageForCage[0] <= self.height) and (packageForCage[1] <= self.width):
             self.length += packageForCage[2]
-        elif (self.width + packageForCage[1]) <= cage_width and (packageForCage[0] < self.height) and (packageForCage[2] < self.length):
+        elif (self.width + packageForCage[1]) <= cage_width and (packageForCage[0] <= self.height) and (packageForCage[2] <= self.length):
             self.width += packageForCage[1]
         else:
             self.height += packageForCage[0]
+            self.width = packageForCage[1]
+            self.length = packageForCage[2]
         
         if self.width < packageForCage[1]:
             self.width = packageForCage[1]
@@ -64,7 +66,7 @@ if __name__ == '__main__':
     for packageForCage in sortedAllPackages:
         # Try to fit package into a cage
         for cage in cages:
-            if (cage.height + packageForCage[0] <= cage_heigth) and (cage.length) <= cage_length and (cage.width) <= cage_width:
+            if (cage.height + packageForCage[0] <= cage_heigth):
                 cage.append(packageForCage)
                 break
         else:
